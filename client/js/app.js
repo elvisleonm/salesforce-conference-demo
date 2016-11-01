@@ -1,15 +1,37 @@
 function getSessionList(success, error) {
-  //var soql = "SELECT Session__r.Id, Session__r.Name FROM Session_Speaker__c";
-  var soql = "SELECT Id, Name FROM Session_Speaker__c";
+  //var soql = "SELECT Id, Name FROM Session_Speaker__c";
+  var soql = "SELECT BillingStreet, ShippingStreet, BillingCity, ShippingCity, CreatedById, BillingPostalCode, ShippingPostalCode, Description, ShippingState, CreatedDate, LastModifiedDate, Id, ParentId, MasterRecordId, Name, BillingCountry, ShippingCountry, BillingState, Phone, Type FROM Account"
   force.query(soql, success, error);
 }
 
 function getSessionDetails(sessionId, success, error) {
-  var soql = "SELECT Name, " +
+  /*var soql = "SELECT Name, " +
   "Session_Date__c, " +
   "First_Name__c, " +
   "Last_Name__c " +
   "FROM Session_Speaker__c " +
+  "WHERE Id = '" + sessionId + "'";*/
+  var soql = "SELECT BillingStreet, "+
+  "ShippingStreet, "+
+  "BillingCity, "+
+  "ShippingCity, "+
+  "CreatedById, "+
+  "BillingPostalCode, "+
+  "ShippingPostalCode, "+
+  "Description, "+
+  "ShippingState, "+
+  "CreatedDate, "+
+  "LastModifiedDate, "+
+  "Id, "+
+  "ParentId, "+
+  "MasterRecordId, "+
+  "Name, "+
+  "BillingCountry, "+
+  "ShippingCountry, "+
+  "BillingState, "+
+  "Phone, "+
+  "Type "+
+  "FROM Account " +
   "WHERE Id = '" + sessionId + "'";
   force.query(soql, success, error);
 }
@@ -20,6 +42,7 @@ function showSessionList() {
             var sessions = data.records,
                 html = '';
             for (var i=0; i<sessions.length; i++) {
+                //html += '<li class="table-view-cell"><a href="#sessions/'+ sessions[i].Id +'">' + sessions[i].Name + '</a></li>';
                 html += '<li class="table-view-cell"><a href="#sessions/'+ sessions[i].Id +'">' + sessions[i].Name + '</a></li>';
             }
             html =
@@ -55,13 +78,16 @@ function showSessionDetails(sessionId) {
                         '<ul class="table-view">' +
                             '<li class="table-view-cell">' +
                                 '<h4>' + session.Name + '</h4>' +
-                                '<p>' + (session.Session_Date__c || 'No time yet')+ '</p>' +
+                                //'<p>' + (session.Session_Date__c || 'No time yet')+ '</p>' +
+                                '<p>' + (session.CreatedDate || 'No time yet')+ '</p>' +
                             '</li>' +
                             '<li class="table-view-cell">Speaker: ' +
-                                session.First_Name__c +
+                                //session.First_Name__c +
+                                session.Description +
                             '</li>' +
                             '<li class="table-view-cell">' +
-                                (session.Description__c || 'No description yet') +
+                                //(session.Description__c || 'No description yet') +
+                                (session.ShippingStreet || 'No description yet') +
                             '</li>' +
                         '</ul>' +
                     '</div>' +
